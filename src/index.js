@@ -3,6 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { worker as MSWWorker } from "./services/mocks/browser";
+
+// It's not recommended to include Mock Service Worker in production. Doing so may lead to a distorted experience for your users.
+// https://mswjs.io/docs/getting-started/integrate/browser
+MSWWorker.start();
 
 ReactDOM.render(
   <React.StrictMode>

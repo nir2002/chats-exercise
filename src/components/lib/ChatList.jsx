@@ -1,24 +1,26 @@
 import { css } from "@emotion/css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import userPlaceHolder from "../../assets/user-placeholder.png";
 import { Search } from "../elements/Search";
 
-const chatsDataMock = [
-  {
-    id: 1,
-    name: "Group 1"
-  },
-  {
-    id: 2,
-    name: "Group 2"
-  }
-];
-
 export default function ChatList({ selected }) {
-  const [filteredChats, setFilteredChats] = useState(chatsDataMock);
+  const [chats, setChats] = useState([]);
+  const [filteredChats, setFilteredChats] = useState([]);
+
+  const fetchChats = async () => {
+    const response = await window.fetch("/chats");
+    const data = await response.json();
+
+    setChats(data);
+    setFilteredChats(data);
+  };
+
+  useEffect(() => {
+    fetchChats();
+  }, []);
 
   const searchChats = (searchText) => {
-    const result = chatsDataMock.filter(({ name }) =>
+    const result = chats.filter(({ name }) =>
       name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())
     );
     setFilteredChats(result);

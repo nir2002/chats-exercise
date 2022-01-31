@@ -1,5 +1,5 @@
 {
-  "name": "chats-container-solution",
+  "name": "chats-data-solution",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,6 +7,7 @@
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
     "@reach/dialog": "0.16.2",
+    "msw": "^0.36.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",

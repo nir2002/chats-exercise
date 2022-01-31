@@ -1,6 +1,6 @@
 # Chats list exercise
 
-In this exercise we will introduce react hooks and learn how to fetch data using http reqeuests
+In this exercise we will introduct react hooks and learn how to fetch data using http reqeuests
 
 We will be working on the <AuthenticatedApp> component which will later on connect to authentication mechanisem
 

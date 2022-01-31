@@ -8,11 +8,20 @@ import Spinner from "../elements/Spinner";
 export default function ChatList({ selected }) {
   const [filteredChats, setFilteredChats] = useState([]);
   const [query, setQuery] = useState("");
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("idle");
 
   useEffect(() => {
-    client(`/chats?query=${encodeURIComponent(query)}`).then((data) =>
-      setFilteredChats(data)
-    );
+    setStatus("loading");
+    client(`/chats?query=${encodeURIComponent(query)}`)
+      .then((data) => {
+        setFilteredChats(data);
+        setStatus("success");
+      })
+      .catch((error) => {
+        setError(error);
+        setStatus("error");
+      });
   }, [query]);
 
   return (
@@ -23,10 +32,24 @@ export default function ChatList({ selected }) {
           setQuery(event.target.value);
         }}
       />
-      <Spinner />
-      {filteredChats?.map(({ id, name }) => (
-        <ChatCard active={selected === id} key={id} name={name} />
-      ))}
+      {status === "loading" ? <Spinner /> : null}
+      {status === "success"
+        ? filteredChats?.map(({ id, name }) => (
+            <ChatCard active={selected === id} key={id} name={name} />
+          ))
+        : null}
+      {status === "error" ? (
+        <div
+          className={css`
+            font-size: 10px;
+            color: red;
+            padding: 5px;
+          `}
+        >
+          <p>There was an error:</p>
+          <pre>{error}</pre>
+        </div>
+      ) : null}
     </div>
   );
 }

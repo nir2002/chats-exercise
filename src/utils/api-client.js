@@ -5,6 +5,9 @@ export async function client(url, customConfig) {
   };
   const response = await window.fetch(url, config);
   const data = await response.json();
-
-  return data;
+  if (response.ok) {
+    return data;
+  } else {
+    return Promise.reject(data);
+  }
 }

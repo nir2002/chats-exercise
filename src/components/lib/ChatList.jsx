@@ -2,38 +2,28 @@ import { css } from "@emotion/css";
 import React, { useEffect, useState } from "react";
 import userPlaceHolder from "../../assets/user-placeholder.png";
 import { Search } from "../elements/Search";
+import { client } from "../../utils/api-client";
+import Spinner from "../elements/Spinner";
 
 export default function ChatList({ selected }) {
-  const [chats, setChats] = useState([]);
   const [filteredChats, setFilteredChats] = useState([]);
-
-  const fetchChats = async () => {
-    const response = await window.fetch("/chats");
-    const data = await response.json();
-
-    setChats(data);
-    setFilteredChats(data);
-  };
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetchChats();
-  }, []);
-
-  const searchChats = (searchText) => {
-    const result = chats.filter(({ name }) =>
-      name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())
+    client(`/chats?query=${encodeURIComponent(query)}`).then((data) =>
+      setFilteredChats(data)
     );
-    setFilteredChats(result);
-  };
+  }, [query]);
 
   return (
     <div>
       <Search
         className={searchStyle}
         onChange={(event) => {
-          searchChats(event.target.value);
+          setQuery(event.target.value);
         }}
       />
+      <Spinner />
       {filteredChats?.map(({ id, name }) => (
         <ChatCard active={selected === id} key={id} name={name} />
       ))}
